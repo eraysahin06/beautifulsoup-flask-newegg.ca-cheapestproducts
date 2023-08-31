@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 
 
-def scrape_newegg(search_query):
+def scrape_newegg(search_query, filter_item_name=None):
     base_url = "https://www.newegg.ca"
     search_url = f"{base_url}/p/pl?d={search_query}&N=4131"
     search_page = requests.get(search_url).text
@@ -55,12 +55,21 @@ def scrape_newegg(search_query):
 @app.route("/", methods=["GET", "POST"])
 def index():
     search_results = []
+    search_results_keyword = ""
 
     if request.method == "POST":
         search_query = request.form.get("search_query")
-        search_results = scrape_newegg(search_query)
+        filter_item_name = request.form.get("filter_item_name")
+        search_results = scrape_newegg(
+            search_query, filter_item_name
+        )  # Provide both arguments
+        search_results_keyword = search_query
 
-    return render_template("index.html", search_results=search_results)
+    return render_template(
+        "index.html",
+        search_results=search_results,
+        search_results_keyword=search_results_keyword,
+    )
 
 
 if __name__ == "__main__":
