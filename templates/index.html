@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Newegg Scraper</title>
+</head>
+
+<body>
+    <h1>Newegg Product Search</h1>
+    <form method="POST">
+        <label for="search_query">Enter the product you're searching for:</label>
+        <input type="text" id="search_query" name="search_query">
+        <button type="submit">Search</button>
+    </form>
+    {% if search_results %}
+    <h2>Search Results:</h2>
+    <ul>
+        {% for item in search_results %}
+        <li>
+            <h3>{{ item.name }}</h3>
+            <p>${{ item.price }}</p>
+            <a href="{{ item.link }}">Link</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+
+</html>
